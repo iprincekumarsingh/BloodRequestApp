@@ -17,7 +17,7 @@ public class MainActivity extends ReactActivity {
   }
   @Override
   protected String getMainComponentName() {
-    return "app";
+    return "Swasthyam The Ai Wellness";
   }
 
   /**
