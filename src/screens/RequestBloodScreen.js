@@ -17,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from '@react-native-community/netinfo';
+import { getBaseURL } from '../api/Axios';
 
 const RequestBloodScreen = () => {
   const isFocused = useIsFocused();
@@ -34,7 +35,7 @@ const RequestBloodScreen = () => {
         setAuthToken(formattedToken);
 
         const response = await fetch(
-          'https://purple-earthworm-sock.cyclic.app/api/v1/blood/bloodLogUser',
+          `${getBaseURL()}blood/bloodLogUser`,
           {
             method: 'GET',
             headers: {

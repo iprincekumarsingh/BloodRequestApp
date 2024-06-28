@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
+import { getBaseURL } from '../../api/Axios';
+
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ const ForgotPassword = ({navigation}) => {
     }
 
     axios
-      .post('https://purple-earthworm-sock.cyclic.app/api/v1/auth/forgot-password', {email})
+      .post(`${getBaseURL()}auth/forgot-password`, {email})
       .then(response => {
         // saving the email in async storage
         console.log(response.data);

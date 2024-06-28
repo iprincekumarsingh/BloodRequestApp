@@ -13,6 +13,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import SelectDropdown from 'react-native-select-dropdown';
 import CheckBox from '@react-native-community/checkbox';
 import axios from 'axios'; // Import Axios for making HTTP requests
+import { getBaseURL } from '../../api/Axios';
 
 export default function Register({navigation}) {
   const bloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -25,7 +26,7 @@ export default function Register({navigation}) {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false); // State for checkbox
-  const [selectedCity, setSelectedCity] = useState(''); // State for dropdown
+const [selectedCity, setSelectedCity] = useState(''); // State for dropdown
   const cities = [
     'Bhubaneswar',
     'Cuttack',
@@ -68,10 +69,10 @@ export default function Register({navigation}) {
       address,
     );
 
-    // https://purple-earthworm-sock.cyclic.app/api/v1/auth/signup
+    // http://192.168.1.4:5000//api/v1/auth/signup
 
     await axios
-      .post('https://purple-earthworm-sock.cyclic.app/api/v1/auth/signup', {
+      .post(`${getBaseURL()}auth/signup`, {
         // .post('http://10.0.2.2:5000/api/v1/auth/signup', {
         name,
         email,

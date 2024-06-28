@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,16 @@ import {
   ToastAndroid,
   Platform,
 } from 'react-native';
-import {Button, Card, Paragraph} from 'react-native-paper';
+import { ActivityIndicator, Button, Card, Paragraph } from 'react-native-paper';
 import SelectDropdown from 'react-native-select-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DocumentPicker from 'react-native-document-picker';
 import notifee from '@notifee/react-native';
-const HomeScreen = ({navigation}) => {
+import { getBaseURL } from '../../api/Axios';
+
+const HomeScreen = ({ navigation }) => {
   const bloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+  const [loading, setLoading] = useState(false)
   const cityList = [
     'Bhubaneswar',
     'Cuttack',
@@ -56,6 +59,7 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   const handleSubmit = async () => {
+    console.log(selectedFile);
     try {
       if (!bloodgroup) {
         ToastAndroid.show('Please select blood group', ToastAndroid.SHORT);
@@ -82,9 +86,11 @@ const HomeScreen = ({navigation}) => {
         formData.append('city', selectedCity);
         formData.append('bloodGroup', bloodgroup);
         formData.append('file', selectedFile); // Add your file here
+        setLoading(true)
 
         const response = await fetch(
-          'https://purple-earthworm-sock.cyclic.app/api/v1/blood/request',
+          // 'http://192.168.1.4:5000/api/v1/blood/request',
+          getBaseURL() + 'blood/request',
           {
             method: 'POST',
             headers: {
@@ -97,16 +103,25 @@ const HomeScreen = ({navigation}) => {
         const data = await response.json();
         if (data.error) {
           ToastAndroid.show(data.error, ToastAndroid.SHORT);
+          setLoading(false)
           return;
         }
         if (data.success === true) {
           ToastAndroid.show('Request sent successfully', ToastAndroid.SHORT);
+          setLoading(false)
         }
 
         console.log(data.data);
+        onDisplayNotification();
+        console.log(data.success);
+        setBloodgroup('');
+        setSelectedCity('');
+        setSelectedFile([]);
+
       } catch (error) {
         // Handle the error here
         console.error('Error in fetch request:', error.message);
+        setLoading(false)
       }
     } catch (error) {
       console.error('An error occurred:', error);
@@ -147,9 +162,9 @@ const HomeScreen = ({navigation}) => {
           style: 'cancel',
         },
 
-        {text: 'OK', onPress: () => chooseFile()},
+        { text: 'OK', onPress: () => chooseFile() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
   const chooseFile = async () => {
@@ -284,19 +299,33 @@ const HomeScreen = ({navigation}) => {
           </Card.Actions>
         )}
         <Card.Actions>
-          <Button
-            mode="contained"
-            onPress={onDisplayNotification}
-            style={[
-              styles.button,
-              {backgroundColor: '#E8290B'},
+          <View style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
 
-              {color: 'white'},
-              {marginTop: 10},
-              {marginBottom: 10},
-            ]}>
-            Send Request
-          </Button>
+          }}>
+            {
+              !loading ? (
+                <Button
+                  mode="contained"
+                  onPress={handleSubmit}
+                  style={[
+                    styles.button,
+                    { backgroundColor: '#E8290B' },
+                    { color: 'white' },
+                    { marginTop: 10 },
+                    { marginBottom: 10 },
+                  ]}
+                >
+                  Send Request
+                </Button>
+              ) : (
+                <ActivityIndicator animating={true} color="#000" />
+              )
+            }
+          </View>
+
         </Card.Actions>
 
         <View

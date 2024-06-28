@@ -12,11 +12,12 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
 import CheckBox from '@react-native-community/checkbox';
+import { getBaseURL } from '../../api/Axios';
 
 // const API_ENDPOINT = 'http://10.0.2.2:5000/api/v1/auth/login';
 const API_ENDPOINT =
-  'https://purple-earthworm-sock.cyclic.app/api/v1/auth/login';
-// 'https://purple-earthworm-sock.cyclic.app/api/v1/auth/login';
+  `${getBaseURL()}auth/login`;
+// 'http://192.168.1.4:5000//api/v1/auth/login';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');

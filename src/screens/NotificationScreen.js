@@ -19,7 +19,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
-const BASE_URL = 'https://purple-earthworm-sock.cyclic.app/api/v1';
+const BASE_URL = 'http://192.168.1.4:5000/api/v1';
 
 async function makeRequest(selectedCity, bloodgroup, authToken) {
   try {
@@ -89,7 +89,8 @@ const NotificationScreen = () => {
             console.log(data.error);
 
             if(data.error){
-              ToastAndroid.show(data.error, ToastAndroid.SHORT);
+              // ToastAndroid.show(data.error, ToastAndroid.SHORT);
+              ToastAndroid.show('No Notification', ToastAndroid.SHORT);
               setNotificationCount(0);
               return;
             }
@@ -98,9 +99,6 @@ const NotificationScreen = () => {
               setNotificationCount(data.data.length);
             }
 
-           
-
-          
           }
         }
       } catch (error) {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
@@ -9,13 +9,15 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import axios from 'axios';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { getBaseURL } from '../api/Axios';
+
+
 
 const API_ENDPOINT =
-  'https://purple-earthworm-sock.cyclic.app/api/v1/query/querySave';
+  'http://192.168.1.4:5000/api/v1/query/querySave';
 
-const QueryHelp = ({navigation}) => {
+const QueryHelp = ({ navigation }) => {
   const [query, setQuery] = useState('');
   const [token, setAuthToken] = useState('');
 
@@ -31,8 +33,8 @@ const QueryHelp = ({navigation}) => {
     console.log(token);
 
     const url =
-      'https://purple-earthworm-sock.cyclic.app/api/v1/query/querySave';
-    const data = {query: query};
+      `${getBaseURL()}api/v1/query/querySave`;
+    const data = { query: query };
     const headers = {
       Authorization: `Bearer ${token}`,
     };

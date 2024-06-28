@@ -57,7 +57,7 @@ export default function EditProfile({navigation}) {
       formData.append('file', selectedFile); // Add your file here
 
       const response = await fetch(
-        'https://purple-earthworm-sock.cyclic.app/api/v1/user/update-profile',
+        'http://192.168.1.4:5000/api/v1/user/update-profile',
         {
           method: 'put',
           headers: {
